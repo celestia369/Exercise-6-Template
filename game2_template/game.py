@@ -24,6 +24,13 @@ def list_of_items(items):
     'money, a student handbook, laptop'
 
     """
+    toprint = ""
+    for i in range(0,len(items)):
+        if not i == 0:
+            toprint = toprint+ ", "
+        toprint = toprint + items[i]["name"]
+    return toprint
+                    
     pass
 
 
@@ -49,6 +56,8 @@ def print_room_items(room):
     Note: <BLANKLINE> here means that doctest should expect a blank line.
 
     """
+    if room["items"]:
+        print("There is " + list_of_items( room["items"]) +" here."+"\n")
     pass
 
 
@@ -62,7 +71,10 @@ def print_inventory_items(items):
     <BLANKLINE>
 
     """
+    if items:
+        print("You have " + list_of_items( items) +"."+"\n" )
     pass
+
 
 
 def print_room(room):
@@ -118,7 +130,7 @@ def print_room(room):
     # Display room description
     print(room["description"])
     print()
-
+    print_room_items(room)
     #
     # COMPLETE ME!
     #
