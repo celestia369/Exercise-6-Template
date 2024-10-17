@@ -5,7 +5,7 @@ from player import *
 from items import *
 from gameparser import *
 
-
+current_room = rooms["Reception"]
 
 def list_of_items(items):
     """This function takes a list of items (see items.py for the definition) and
@@ -234,19 +234,42 @@ def execute_go(direction):
     (and prints the name of the room into which the player is
     moving). Otherwise, it prints "You cannot go there."
     """
+    global current_room
+    current_room = rooms[current_room["exits"][direction]]
+    print(current_room["name"])
     pass
 
 
 def execute_take(item_id):
-    """This function takes an item_id as an argument and moves this item from the
-    list of items in the current room to the player's inventory. However, if
-    there is no such item in the room, this function prints
-    "You cannot take that."
-    """
-    pass
-    
+    global current_room, inventory
+    item_found = None
+    for item in current_room["items"]:
+        if item["id"] == item_id:
+            item_found = item
+            break
+
+    if item_found:
+        current_room["items"].remove(item_found)
+        inventory.append(item_found)
+        print(f"You have taken the {item_found['name']}.")
+    else:
+        print("You cannot take that.")
 
 def execute_drop(item_id):
+    global current_room, inventory
+    item_found = None
+    for item in inventory:
+        if item["id"] == item_id:
+            item_found = item
+            break
+
+    if item_found:
+        inventory.remove(item_found)
+        current_room["items"].append(item_found)
+        print(f"You have dropped the {item_found['name']}.")
+    else:
+        print("You cannot drop that.")
+
     """This function takes an item_id as an argument and moves this item from the
     player's inventory to list of items in the current room. However, if there is
     no such item in the inventory, this function prints "You cannot drop that."
